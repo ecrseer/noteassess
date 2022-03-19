@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "834619114041",
+    "project_id": "smpa-assess",
+    "storage_bucket": "smpa-assess.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:834619114041:android:7a2d6bcd3d928cb451c3e8",
+        "android_client_info": {
+          "package_name": "br.infnet.smpa_gabriel_justino_assessmnt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "834619114041-m0nm56ep3npdiv8q0viseu3u077c3qkg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA58_RDu_p9E7c38cylTxbQ8vFMHrjsG3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "834619114041-m0nm56ep3npdiv8q0viseu3u077c3qkg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
