@@ -23,7 +23,7 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private fun adsPubBind(view:View){
+    private fun adsPubBind(){
         MobileAds.initialize(requireContext())
         val adView = binding.adView
         val adBuild = AdRequest.Builder().build()
@@ -72,6 +72,11 @@ class HomeFragment : Fragment() {
             textView.text = it
         })
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        adsPubBind()
     }
 
     override fun onDestroyView() {
