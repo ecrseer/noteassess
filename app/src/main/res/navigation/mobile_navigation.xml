@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="br.infnet.smpa_gabriel_justino_assessmnt.ui.home.HomeFragment"
+        android:name="br.infnet.smpa_gabriel_justino_assessmnt.ui.login.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 

@@ -1,23 +1,30 @@
-package br.infnet.smpa_gabriel_justino_assessmnt.ui.home
+package br.infnet.smpa_gabriel_justino_assessmnt.ui.login
 
+import android.content.Context
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import br.infnet.smpa_gabriel_justino_assessmnt.R
+import br.infnet.smpa_gabriel_justino_assessmnt.MainActivityViewModel
 import br.infnet.smpa_gabriel_justino_assessmnt.databinding.FragmentHomeBinding
+import br.infnet.smpa_gabriel_justino_assessmnt.services.MyStore
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 
 class HomeFragment : Fragment() {
-
+    companion object {
+        fun newInstance() = HomeFragment()
+    }
     private lateinit var homeViewModel: HomeViewModel
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
@@ -65,18 +72,32 @@ class HomeFragment : Fragment() {
             ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adsPubBind()
+        binding.mainLoginBtn.setOnClickListener {
+            val myStore = MyStore(requireActivity() as AppCompatActivity)
+            val firstProduct = myStore.myProducts[0]
+            //myStore.makePurchase(firstProduct)
+            //activityViewModel.readS(requireContext())
+            val locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+            activityViewModel.gpsS(requireContext(),locationManager)
+
+        }
+        binding.mainSigninBtn.setOnClickListener {
+            SignInDialog().show(childFragmentManager,"abcd")
+        }
+        with(homeViewModel){
+            text.observe(viewLifecycleOwner, Observer {
+                binding.textHome.text = it
+            })
+
+
+        }
     }
 
     override fun onDestroyView() {

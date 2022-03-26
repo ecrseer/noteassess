@@ -3,4 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="login_failed">Falha no login</string>
+    <string name="invalid_username">Email invalido</string>
+    <string name="invalid_password">Senha invalida</string>
+    <string name="welcome">Bem vindo(a)</string>
 </resources>
