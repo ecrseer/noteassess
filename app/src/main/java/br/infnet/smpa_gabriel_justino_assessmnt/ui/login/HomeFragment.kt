@@ -79,17 +79,19 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adsPubBind()
         binding.mainLoginBtn.setOnClickListener {
+
+            SignUpDialog().show(childFragmentManager,"Entre com a sua conta")/*
             val myStore = MyStore(requireActivity() as AppCompatActivity)
             val firstProduct = myStore.myProducts[0]
             //myStore.makePurchase(firstProduct)
             //activityViewModel.readS(requireContext())
             val locationManager = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-            activityViewModel.gpsS(requireContext(),locationManager)
+            activityViewModel.gpsS(requireContext(),locationManager)*/
 
         }
         binding.mainSigninBtn.setOnClickListener {
-            SignInDialog().show(childFragmentManager,"abcd")
+            SignInDialog().show(childFragmentManager,"Crie sua conta")
         }
         with(homeViewModel){
             text.observe(viewLifecycleOwner, Observer {

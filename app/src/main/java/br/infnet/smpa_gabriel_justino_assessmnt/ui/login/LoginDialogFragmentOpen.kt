@@ -102,9 +102,9 @@ open class LoginDialogFragmentOpen : DialogFragment() {
                 if (loginResult.error != null) {
                     showLoginFailed(loginResult.error)
                 }
-                if (loginResult.success != null) {
+                /*if (loginResult.success != null) {
                     updateUiWithUser(loginResult.success)
-                }
+                }*/
 
                 //Complete and destroy login activity once successful
                 ///setResult(Activity.RESULT_OK)
