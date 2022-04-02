@@ -42,9 +42,14 @@ class MainActivity : AppCompatActivity() {
             "$message",
             Snackbar.LENGTH_LONG+4242).show()
     }
-    fun watchNavigationGuard(loggedIn: Boolean) {
-        if (loggedIn) navController.navigate(R.id.navigation_dashboard)
-        else navController.navigate(R.id.navigation_home)
+    fun watchNavigationGuard(loggedIn: Boolean,prevent:Boolean) {
+        if(prevent===false){
+            if (loggedIn) navController.navigate(R.id.navigation_dashboard)
+            else navController.navigate(R.id.navigation_home)
+
+        }else{
+            viewModel.preventNavigation.postValue(false)
+        }
     }
 
 
@@ -58,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                 }
             })
             isUserLoggedIn.observe(this@MainActivity, Observer { loggedIn ->
-                watchNavigationGuard(loggedIn)
+                preventNavigation.value?.let { watchNavigationGuard(loggedIn, it) }
             })
 
         }

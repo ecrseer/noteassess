@@ -3,6 +3,7 @@ package br.infnet.smpa_gabriel_justino_assessmnt.services
 import android.content.Context
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
+import br.infnet.smpa_gabriel_justino_assessmnt.domain.UserNote
 import java.io.File
 
 class MyEncriptionHandler(
@@ -36,6 +37,7 @@ class MyEncriptionHandler(
         return bundle
     }
 
+
     fun insertEncryptFile(
         context: Context, chosenFileName: String,
         textToWrite: String
@@ -62,5 +64,27 @@ class MyEncriptionHandler(
         val bytes = bytesInput.readBytes()
         bytesInput.close()
         return String(bytes)
+    }
+    fun listFiles(context:Context): MutableList<UserNote> {
+
+        val filePointer = File(context.filesDir,"")
+        val filesNames = mutableListOf<String>()
+        val userNotes = mutableListOf<UserNote>()
+        for (f:File in filePointer.listFiles()) {
+            if (f.isFile){
+                val name:String = f.getName()
+                filesNames.add(name)
+                val unEncryptedString = readEncryptFile(context,name)
+                val splitedString = unEncryptedString.split(UserNote.timeStampDivider)
+                var note:UserNote
+                if(splitedString.size==2){
+                    note = UserNote(name, splitedString[1].trim().toLong(), splitedString[0])
+                    userNotes.add(note)
+                }
+
+
+            }
+        }
+        return userNotes
     }
 }

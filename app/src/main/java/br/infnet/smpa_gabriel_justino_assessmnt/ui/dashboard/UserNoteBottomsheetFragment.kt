@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import br.infnet.smpa_gabriel_justino_assessmnt.R
 import br.infnet.smpa_gabriel_justino_assessmnt.databinding.FragmentUsernoteRegisterBinding
+import br.infnet.smpa_gabriel_justino_assessmnt.domain.UserNote
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import java.util.*
 
-class UserNoteBottomsheetFragment: BottomSheetDialogFragment() {
+class UserNoteBottomsheetFragment : BottomSheetDialogFragment() {
     // TODO: Customize parameter argument names
-    val ARG_ITEM_COUNT = "item_count"
+    val ARG_userNote_position = "userNote_position"
 
-    private val viewModel  by viewModels<DashboardViewModel>({
+    private val viewModel by viewModels<ListUserNotesViewModel>({
         requireParentFragment()
     })
     private var _binding: FragmentUsernoteRegisterBinding? = null
@@ -34,33 +34,26 @@ class UserNoteBottomsheetFragment: BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-      /*  viewModel.searchedImg.observe(viewLifecycleOwner,
-            Observer {bigThumbnalUrl->
-            val isLinkOk = bigThumbnalUrl.contains("http")
-            if(isLinkOk){
-                val dimen = R.id.bottomsheet_imgview
-                Picasso.get().load(bigThumbnalUrl)
-                    .fit()
-                    .centerCrop()
+        with(binding) {
+            btnUsernoteSave.setOnClickListener {
+                val time = Calendar.getInstance().timeInMillis
 
-                    .error(R.drawable.ic_launcher_foreground)
-                    .into(binding.bottomsheetImgview)
+                val un = UserNote(txtUsernoteTitle.text.toString(),
+                    time, txtUsernoteText.text.toString())
+                viewModel.createUserNote(un, requireContext())
             }
 
-        })
-        binding.bottomsheetTxtTvshowName.afterTextChanged {
-            viewModel.searchTvShowImage(it)
-        }*/
+        }
     }
 
 
     companion object {
 
         // TODO: Customize parameters
-        fun newInstance(itemCount: Int): UserNoteBottomsheetFragment =
+        fun newInstance(userNote_position: Int): UserNoteBottomsheetFragment =
             UserNoteBottomsheetFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(ARG_ITEM_COUNT, itemCount)
+                    putInt(ARG_userNote_position, userNote_position)
                 }
             }
 

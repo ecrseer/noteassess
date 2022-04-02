@@ -41,5 +41,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_usernote_title" />
 
+        <Button
+            android:id="@+id/btn_usernote_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@android:drawable/ic_menu_save"
+            app:iconGravity="textStart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_usernote_text" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

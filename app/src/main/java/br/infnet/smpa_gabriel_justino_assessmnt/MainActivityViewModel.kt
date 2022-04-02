@@ -132,4 +132,9 @@ class MainActivityViewModel:ViewModel() {
         }
 
     }
+    val preventNavigation = MutableLiveData<Boolean>().apply { value = false }
+
+    fun preventMyWatchNavigation() {
+        preventNavigation.value=true
+    }
 }
