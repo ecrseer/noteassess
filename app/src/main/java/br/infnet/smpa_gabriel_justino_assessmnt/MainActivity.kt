@@ -1,5 +1,7 @@
 package br.infnet.smpa_gabriel_justino_assessmnt
 
+import android.content.Context
+import android.location.LocationManager
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -54,6 +56,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
     override fun onStart() {
         super.onStart()
         with(viewModel){
@@ -69,5 +72,13 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

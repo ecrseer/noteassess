@@ -1,6 +1,7 @@
 package br.infnet.smpa_gabriel_justino_assessmnt.ui.dashboard
 
 import android.content.Context
+import android.location.Location
 import androidx.lifecycle.*
 import br.infnet.smpa_gabriel_justino_assessmnt.MyActionState
 import br.infnet.smpa_gabriel_justino_assessmnt.PossibleActions
@@ -39,28 +40,24 @@ class ListUserNotesViewModel(private val myFirestoreUserId:String) : ViewModel()
 
     }
 
-    fun writeUserNoteFile(context: Context,title:String,description:String,timeNow:Long){
+    fun writeUserNoteFile(context: Context,title:String,description:String,timeNow:Long,location:Location){
         viewModelScope.launch{
 
-            val bulkText = "$description ${UserNote.timeStampDivider} $timeNow"
+            val locationText ="""
+                latitude:${location.latitude},longitude:${location.longitude}
+                """.trimIndent()
+
+            val bulkText = """$description ${UserNote.timeStampDivider}
+                     $timeNow ${UserNote.locationDivider} $locationText
+                     """.trimIndent()
             val path = service.insertEncryptFile(context,
                 "$title.txt","$bulkText")
             actionsState.postValue(
                 MyActionState(PossibleActions.FILEWRITEN,path)
             )
             println(path)
+            populateNotesList(context)
 
-
-        }
-    }
-
-    fun readS(context: Context){
-        viewModelScope.launch{
-            val strings = service.readEncryptFile(context,"abc.txt")
-            actionsState.postValue(
-                MyActionState(PossibleActions.FILEWRITEN,strings)
-            )
-            println(strings)
         }
     }
 
@@ -68,8 +65,10 @@ class ListUserNotesViewModel(private val myFirestoreUserId:String) : ViewModel()
     fun createUserNote(un: UserNote,context: Context) {
 
         with(un){
-            if(title!=null && description !=null && timestamp !=null)
-                writeUserNoteFile(context,title,description,timestamp)
+            val emptyLocal=  Location("")
+            if(title!=null && description !=null && timestamp !=null )
+                writeUserNoteFile(context,title,description,timestamp,location?: emptyLocal)
         }
+
     }
 }

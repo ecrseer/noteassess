@@ -13,7 +13,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 enum class PossibleActions{
-    FILEWRITEN
+    FILEWRITEN,EMPTY
 }
 class MyActionState(
     var lastActionTaken:PossibleActions,

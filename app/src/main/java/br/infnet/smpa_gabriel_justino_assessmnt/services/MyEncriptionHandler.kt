@@ -1,10 +1,12 @@
 package br.infnet.smpa_gabriel_justino_assessmnt.services
 
 import android.content.Context
+import android.location.Location
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
 import br.infnet.smpa_gabriel_justino_assessmnt.domain.UserNote
 import java.io.File
+import java.lang.Double
 
 class MyEncriptionHandler(
     private val email: String
@@ -72,19 +74,66 @@ class MyEncriptionHandler(
         val userNotes = mutableListOf<UserNote>()
         for (f:File in filePointer.listFiles()) {
             if (f.isFile){
-                val name:String = f.getName()
+                val name:String = f.name
                 filesNames.add(name)
                 val unEncryptedString = readEncryptFile(context,name)
-                val splitedString = unEncryptedString.split(UserNote.timeStampDivider)
-                var note:UserNote
-                if(splitedString.size==2){
-                    note = UserNote(name, splitedString[1].trim().toLong(), splitedString[0])
-                    userNotes.add(note)
+
+                var note = tryGetUserNoteByString(unEncryptedString,f)
+                note?.let {
+                    userNotes.add(it)
                 }
 
 
             }
         }
+        userNotes.sortByDescending { it.timestamp }
         return userNotes
+    }
+    private fun getLocationByString(string: String): Location {
+
+        fun getFirstDouble(string:String): kotlin.Double? {
+            try {
+                val st = string.split(":")[1]
+                return Double.parseDouble(st)
+            }catch (e:Exception){
+                return null
+            }
+        }
+        val latiAndLonString = string.split(",")
+        val lati = latiAndLonString[0]
+        val lon = latiAndLonString[1]
+        val latitude = getFirstDouble(lati)
+        val longitude = getFirstDouble(lon)
+        val location = Location("")
+        latitude?.let{
+            location.longitude = longitude!!
+            location.latitude = latitude
+        }
+        return location
+    }
+
+    private fun tryGetUserNoteByString(
+        unEncryptedString:String,
+        f: File,
+    ): UserNote? {
+        try{
+            var note=UserNote()
+            val descriptionAndTimestamp = unEncryptedString.split(UserNote.timeStampDivider)
+            if (descriptionAndTimestamp.size == 2) {
+                var timestampAndLocation =  descriptionAndTimestamp[1].split(UserNote.locationDivider)
+                val description = descriptionAndTimestamp[0]
+                val timestamp = timestampAndLocation[0].trim().toLong()
+                val lat =  timestampAndLocation[1].split("latitude:")
+                val lon = timestampAndLocation[1].split("longitude")
+                val local = getLocationByString(timestampAndLocation[1])
+
+                note = UserNote(f.nameWithoutExtension,timestamp,description, local)
+            }
+            return note;
+        }catch(except:Exception) {
+            println(except.message)
+            return null
+        }
+
     }
 }

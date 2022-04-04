@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import br.infnet.smpa_gabriel_justino_assessmnt.databinding.FragmentUsernoteItemBinding
 
 import br.infnet.smpa_gabriel_justino_assessmnt.domain.UserNote
+import java.text.DateFormat.getDateInstance
+import java.text.SimpleDateFormat
 import java.util.*
 
 class ListUserNotesAdapter(
@@ -41,6 +43,11 @@ class ListUserNotesAdapter(
 
         holder.title.text = item.title
 
+        val simpleDateFormat = getDateInstance()
+        val dateString = simpleDateFormat.format(item.timestamp)
+
+        holder.timestamp.text = dateString
+
     }
 
     override fun getItemCount(): Int = listaNotasImg.size
@@ -48,7 +55,8 @@ class ListUserNotesAdapter(
     inner class ViewHolder(binding: FragmentUsernoteItemBinding,
                            clickCallback:(Int)->Unit ) :
                             RecyclerView.ViewHolder(binding.root) {
-        val title: TextView = binding.textView
+        val title: TextView = binding.noteitemTitle
+        val timestamp: TextView = binding.noteitemTimestamp
         val background: CardView = binding.cardvUsernoteBackground
         init{
             background.setOnClickListener {

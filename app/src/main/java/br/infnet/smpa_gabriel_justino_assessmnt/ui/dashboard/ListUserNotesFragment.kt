@@ -2,27 +2,34 @@ package br.infnet.smpa_gabriel_justino_assessmnt.ui.dashboard
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.location.LocationManager
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import br.infnet.smpa_gabriel_justino_assessmnt.MainActivityViewModel
+import br.infnet.smpa_gabriel_justino_assessmnt.PossibleActions
 import br.infnet.smpa_gabriel_justino_assessmnt.databinding.FragmentListUsernotesBinding
 import br.infnet.smpa_gabriel_justino_assessmnt.domain.UserNote
+import br.infnet.smpa_gabriel_justino_assessmnt.services.MyLocationHandler
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
+import com.google.android.material.snackbar.Snackbar
 
 class ListUserNotesFragment : Fragment() {
 
@@ -32,6 +39,7 @@ class ListUserNotesFragment : Fragment() {
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     val CAMERA_PERMISSION_CODE = 100
     val REQUESTING_CAMERA_CODE = 1889
+    private lateinit var locationHandler: MyLocationHandler;
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -56,18 +64,21 @@ class ListUserNotesFragment : Fragment() {
 
 
 
+
         _binding = FragmentListUsernotesBinding.inflate(inflater, container, false)
         val root: View = binding.root
         return root
     }
 
     private fun setupViewModel() {
-        listUserNotesViewModel.notesList.observe(viewLifecycleOwner,Observer{
-                list->
-            list?.let {
-                updateList(it)
-            }
-        })
+        with(listUserNotesViewModel) {
+            notesList.observe(viewLifecycleOwner, Observer { list ->
+                list?.let {
+                    updateList(it)
+                }
+            })
+        }
+
     }
 
     private fun tryTakePic(){
@@ -92,7 +103,7 @@ class ListUserNotesFragment : Fragment() {
         if (requestCode == REQUESTING_CAMERA_CODE && resultCode == RESULT_OK) {
             data?.extras?.let { extras ->
                 val bitmapPic: Bitmap? = extras.get("data") as Bitmap?
-                bitmapPic?.let { it -> binding.imageView.setImageBitmap(it) }
+                //bitmapPic?.let { it -> binding.imageView.setImageBitmap(it) }
                 activityViewModel.preventMyWatchNavigation()
 
             }
@@ -109,6 +120,7 @@ class ListUserNotesFragment : Fragment() {
         }
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnLogout.setOnClickListener {
@@ -117,6 +129,8 @@ class ListUserNotesFragment : Fragment() {
         binding.fabCreateusernote.setOnClickListener {
             UserNoteBottomsheetFragment.newInstance(-1)
                 .show(childFragmentManager, "criar nota")
+
+
         }
         adsPubBind()
 
