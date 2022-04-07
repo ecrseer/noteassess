@@ -85,14 +85,15 @@ fun expand(){
         with(binding) {
             btnUsernoteSave.setOnClickListener {
                 val time = Calendar.getInstance().timeInMillis
-                val lastLocale:Location? =
-                    lastLocation?: getLocationIfPossible()
-
+                getLocationIfPossible()?.let{
+                    lastLocation=it
                     val note = UserNote(
                         txtUsernoteTitle.text.toString(),
                         time, txtUsernoteText.text.toString(),
-                        lastLocale)
+                        lastLocation)
                     viewModel.createUserNote(note, requireContext())
+                }
+
             }
             btnUsernoteSeemap.setOnClickListener {
                 viewModel.notesList.value?.let {
@@ -100,9 +101,9 @@ fun expand(){
                     if(noteSelected.location!=null){
                         val lat = noteSelected.location.latitude
                         val lon = noteSelected.location.longitude
-                        val urlString = "geo:$lat,$lon"
+                        val urlString = "geo:$lat,$lon?q=$lat,$lon(${noteSelected.title})"
                         val openMapUri = Uri
-                            .parse("$urlString?label=${noteSelected.title}")
+                            .parse("$urlString")
                         val intent = Intent(Intent.ACTION_VIEW,openMapUri)
                         startActivity(intent)
                     }
@@ -133,6 +134,10 @@ fun expand(){
         with(binding) {
             txtUsernoteTitle.setText(note.title)
             txtUsernoteText.setText(note.description)
+            val isValidLocation = note.location?.latitude!=null && note.location.latitude.compareTo(0)!=0
+            if(isValidLocation){
+                binding.btnUsernoteSeemap.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -158,6 +163,13 @@ fun expand(){
             if(requestAtempts<1){
                 requestAtempts++;
                 lastLocation = getLocationIfPossible()
+
+                val time = Calendar.getInstance().timeInMillis
+                val note = UserNote(
+                    binding.txtUsernoteTitle.text.toString(),
+                    time, binding.txtUsernoteText.text.toString(),
+                    lastLocation)
+                viewModel.createUserNote(note, requireContext())
 
             }
 

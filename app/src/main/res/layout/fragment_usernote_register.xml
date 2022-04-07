@@ -61,6 +61,7 @@
             android:layout_height="wrap_content"
             android:text="ver no"
             android:textSize="8sp"
+            android:visibility="invisible"
             app:icon="@android:drawable/ic_dialog_map"
             app:iconGravity="end"
             app:layout_constraintEnd_toEndOf="parent"
