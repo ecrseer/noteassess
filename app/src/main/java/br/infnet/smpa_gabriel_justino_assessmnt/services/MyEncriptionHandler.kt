@@ -89,25 +89,29 @@ class MyEncriptionHandler(
         userNotes.sortByDescending { it.timestamp }
         return userNotes
     }
-    private fun getLocationByString(string: String): Location {
+    private fun getLocationByString(txt: String): Location {
+        val location = Location("")
 
-        fun getFirstDouble(string:String): kotlin.Double? {
+        fun getFirstDouble(key:String): kotlin.Double? {
             try {
-                val st = string.split(":")[1]
-                return Double.parseDouble(st)
+
+
+                val regex = """$key:(-?\d*\.{0,1}\d{1,20})""".toRegex()
+                val labelAndNumberArray = regex.find(txt)?.value?.split(":")
+
+                labelAndNumberArray?.get(1)?.trim()?.let { number->
+                    if(number!=null) return number.toDouble()
+                }
+                return null
             }catch (e:Exception){
                 return null
             }
         }
-        val latiAndLonString = string.split(",")
-        val lati = latiAndLonString[0]
-        val lon = latiAndLonString[1]
-        val latitude = getFirstDouble(lati)
-        val longitude = getFirstDouble(lon)
-        val location = Location("")
-        latitude?.let{
-            location.longitude = longitude!!
-            location.latitude = latitude
+        val lat = getFirstDouble("latitude")
+        val lon = getFirstDouble("longitude")
+        if(lat!=null && lon !=null) {
+            location.latitude = lat
+            location.longitude = lon
         }
         return location
     }
@@ -123,8 +127,7 @@ class MyEncriptionHandler(
                 var timestampAndLocation =  descriptionAndTimestamp[1].split(UserNote.locationDivider)
                 val description = descriptionAndTimestamp[0]
                 val timestamp = timestampAndLocation[0].trim().toLong()
-                val lat =  timestampAndLocation[1].split("latitude:")
-                val lon = timestampAndLocation[1].split("longitude")
+                val locationTxt= timestampAndLocation[1]
                 val local = getLocationByString(timestampAndLocation[1])
 
                 note = UserNote(f.nameWithoutExtension,timestamp,description, local)

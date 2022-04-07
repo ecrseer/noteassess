@@ -22,13 +22,9 @@ class ListUserNotesViewModelFactory(
 }
 class ListUserNotesViewModel(private val myFirestoreUserId:String) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
-    }
 
     val actionsState = MutableLiveData<MyActionState>()
 
-    val text: LiveData<String> = _text
     val notesList = MutableLiveData<MutableList<UserNote>>()
 
     val service = MyEncriptionHandler("${myFirestoreUserId}")

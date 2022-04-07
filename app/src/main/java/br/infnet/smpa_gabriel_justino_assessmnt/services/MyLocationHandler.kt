@@ -66,7 +66,7 @@ class MyLocationHandler(
                 lastPlace = getLocalByNetwork(lm,selectedListener)
             }
         } else {
-            lastPlace = getLocalByNetwork(lm,selectedListener)
+            return null
         }
         return lastPlace
     }
