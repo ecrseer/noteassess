@@ -23,8 +23,7 @@ class HomeFragment : Fragment() {
     companion object {
         fun newInstance() = HomeFragment()
     }
-    private lateinit var homeViewModel: HomeViewModel
-    private val activityViewModel: MainActivityViewModel by activityViewModels()
+     
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
@@ -68,8 +67,6 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -92,13 +89,6 @@ class HomeFragment : Fragment() {
         }
         binding.mainSigninBtn.setOnClickListener {
             SignInDialog().show(childFragmentManager,"Crie sua conta")
-        }
-        with(homeViewModel){
-            text.observe(viewLifecycleOwner, Observer {
-                binding.textHome.text = it
-            })
-
-
         }
     }
 

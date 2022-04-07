@@ -7,9 +7,11 @@
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.20697463768115942" />
         <entry key="app/src/main/res/layout/fragment_list_usernotes.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.11865942028985507" />
         <entry key="app/src/main/res/layout/fragment_usernote_item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_usernote_register.xml" value="0.33" />
         <entry key="app/src/main/res/layout/login_dialog_fragment_open.xml" value="0.5" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.20260416666666667" />
       </map>
     </option>
   </component>

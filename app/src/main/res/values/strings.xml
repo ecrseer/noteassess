@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">Smpa_gj_assess</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_dashboard">Minhas Anotacoes</string>
     <string name="login_failed">Falha no login</string>
     <string name="invalid_username">Email invalido</string>
     <string name="invalid_password">Senha invalida</string>
